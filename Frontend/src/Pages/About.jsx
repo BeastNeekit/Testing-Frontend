@@ -1,8 +1,8 @@
-
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import OrderList from "./OrderList";
 import Statement from "./Statement";
-import {backUrl} from "../Urls";
+import { backUrl } from "../Urls";
+
 
 const About = () => {
     const [orders, setOrders] = useState([]);
@@ -28,16 +28,13 @@ const About = () => {
         }
     };
 
-    const addOrder = (newOrder) => {
-        setOrders([...orders, { ...newOrder, id: (orders.length + 1).toString() }]);
-    };
-  return (
-    <div>
-        <Statement orders={orders}/>
-        <OrderList orders={orders}/>
 
-    </div>
-  );
+    return (
+        <div>
+            <Statement orders={orders} />
+            <OrderList orders={orders} />
+        </div>
+    );
 };
 
 export default About;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/order.css';
-import {backUrl} from "../Urls";
+
 
 const defaultAvatar = '/assets/default-avatar.jpg';
 
@@ -52,7 +52,7 @@ const OrderList = ({ orders }) => {
     const totals = calculateTotals(selectedOrders);
 
     const getAvatarUrl = (customerName) => {
-        const avatarBasePath = '/assets/avatars/';
+        const avatarBasePath = `/assets/avatars/`;
         const avatarFileName = `${customerName.toLowerCase().replace(/ /g, '-')}.jpg`;
         return `${avatarBasePath}${avatarFileName}`;
     };
