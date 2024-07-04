@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import '../css/order.css';
 import {backUrl} from "../Urls";
+import OrderList from "../Pages/OrderList";
 
 const InputDetail = ({ addOrder }) => {
     const [customerName, setCustomerName] = useState('');
@@ -110,6 +111,7 @@ const InputDetail = ({ addOrder }) => {
                 </div>
                 <button type="submit">Add Order</button>
             </form>
+             <OrderList/>
         </div>
     );
 };
