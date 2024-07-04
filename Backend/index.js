@@ -1,7 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 const { connection } = require("./db");
-const orderRoutes = require('./routes/orderRoutes');
+const orderRoutes = require('./Routes/orderRoutes');
 const cors = require('cors');
 
 require("dotenv").config
