@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use(cors(
     {
-      origin: ["https://frontend-delta-gilt-40.vercel.app"],
+      origin: ["https://testing-frontend-2pq8.vercel.app"],
       methods: ["POST", "GET"],
       credentials: true
     }
