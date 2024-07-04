@@ -52,7 +52,7 @@ const OrderList = ({ orders }) => {
     const totals = calculateTotals(selectedOrders);
 
     const getAvatarUrl = (customerName) => {
-        const avatarBasePath = `c${backUrl}/assets/avatars/`;
+        const avatarBasePath = '/assets/avatars/';
         const avatarFileName = `${customerName.toLowerCase().replace(/ /g, '-')}.jpg`;
         return `${avatarBasePath}${avatarFileName}`;
     };
