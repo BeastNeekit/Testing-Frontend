@@ -1,2 +1,2 @@
-export const baseUrl = `https://testing-a1cp.onrender.com`
-export const backUrl = `https://testing-a1cp.onrender.com`
+export const baseUrl = `https://testing-frontend-lac.vercel.app`
+export const backUrl = `https://testing-frontend-lac.vercel.app`
