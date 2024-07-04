@@ -3,6 +3,7 @@ const colors = require("colors");
 const { connection } = require("./db");
 const orderRoutes = require('./Routes/orderRoutes');
 const cors = require('cors');
+const userRoutes = require('./Routes/user');
 
 require("dotenv").config
 
@@ -19,6 +20,7 @@ app.use(cors(
     }
 ));
 app.use("/oder", orderRoutes);
+app.use('/user', userRoutes);
 
 app.get("/", async (req, res) => {
   try {
