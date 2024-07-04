@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import '../css/order.css';
-import {backUrl} from "../Urls";
-
+import { backUrl } from "../Urls";
 
 const InputDetail = ({ addOrder }) => {
     const [customerName, setCustomerName] = useState('');
@@ -29,6 +27,8 @@ const InputDetail = ({ addOrder }) => {
             date: nepalTime,
         };
 
+        console.log("Sending order:", newOrder);
+
         try {
             const response = await fetch(`${backUrl}/oder/try`, {
                 method: 'POST',
@@ -39,6 +39,8 @@ const InputDetail = ({ addOrder }) => {
             });
 
             const result = await response.json();
+            console.log("Response received:", result);
+
             if (response.ok) {
                 addOrder(result.order);
                 setMessage({ type: 'success', text: result.message });
@@ -51,7 +53,7 @@ const InputDetail = ({ addOrder }) => {
                 setMessage({ type: 'error', text: result.message });
             }
         } catch (error) {
-            setMessage({ type: 'error', text: 'Error adding order' });
+            setMessage({ type: 'error', text: 'Error adding detail' });
         }
     };
 
