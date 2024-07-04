@@ -74,7 +74,6 @@ const Statement = ({ orders }) => {
             </div>
             {filteredOrders && filteredOrders.length > 0 ? (
                 <div className="filtered-orders">
-                    <h3>Filtered Orders</h3>
                     <table>
                         <thead>
                         <tr>
