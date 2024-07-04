@@ -13,7 +13,7 @@ const About = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`${backUrl}/try`);
+            const response = await fetch(`${backUrl}/oder/try`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
