@@ -16,7 +16,7 @@ import '../css/header.css';
 
 
 const avatars = [
-  { id: 1, src: '/assets/avatars/rashmi.jpg', alt: 'Shop Owner 2', name: 'Rashmi' },
+  { id: 1, src: '/assets/avatars/rashmi.jpg', alt: 'Shop Owner 2', name: 'Rashmi'      },
   { id: 2, src: '/assets/avatars/neekit.jpg', alt: 'Shop Owner 1', name: 'Neekit', hasCrown: true },
   { id: 3, src: '/assets/default-avatar.jpg', alt: 'Shop Owner 3', name: 'Shop Owner 3' },
   { id: 4, src: '/assets/default-avatar.jpg', alt: 'Shop Owner 4', name: 'Shop Owner 4' }
@@ -124,7 +124,7 @@ const NavbarSignUp = () => {
               </Text>
             </Link>
 
-            <Link to={"/add"} >
+            <Link to={"/add" } >
               <Text
                   _hover={{
                     color: "#ff6733",

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import '../css/order.css';
 import { backUrl } from "../Urls";
+import {AuthContext} from "./AuthContext";
 
 const InputDetail = ({ addOrder }) => {
     const [customerName, setCustomerName] = useState('');
@@ -8,7 +9,10 @@ const InputDetail = ({ addOrder }) => {
     const [paidNumber, setPaidNumber] = useState('');
     const [status, setStatus] = useState('Active');
     const [message, setMessage] = useState(null);
-
+    const { logout } = useContext(AuthContext);
+    const handleLogout = () => {
+        logout(); // Clears isLoggedIn and expiry time
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -48,7 +52,7 @@ const InputDetail = ({ addOrder }) => {
                 setCustomerName('');
                 setProductName('');
                 setPaidNumber('');
-                setStatus('Pending');
+                setStatus('Active');
             } else {
                 setMessage({ type: 'error', text: result.message });
             }
@@ -111,8 +115,11 @@ const InputDetail = ({ addOrder }) => {
                         Active
                     </label>
                 </div>
-                <button type="submit">Add Order</button>
+                <button type="submit">Add Detail</button>
             </form>
+            <div><br/>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     );
 };

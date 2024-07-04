@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import {Navigate, Route, Routes} from 'react-router-dom';
 import Login from '../Pages/Login';
 import SignUp from '../Pages/SignUp';
 import Home from '../Pages/Home';
 import About from '../Pages/About';
-import Statement from "../Pages/Statement";
 import Add from "./InputDetail";
 import { backUrl } from '../Urls';
+import { AuthContext } from './AuthContext';
 
 const AllRoutes = () => {
+    const { isLoggedIn, logout } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchOrders();
+        } else {
+            setOrders([]); // Clear orders if not logged in
+        }
+    }, [isLoggedIn]);
 
     useEffect(() => {
         fetchOrders();
@@ -42,9 +51,16 @@ const AllRoutes = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/' element={<Home />} />
-                <Route path='/statement' element={<About orders={orders} />} />
-                <Route path='/add' element={<Add addOrder={addOrder} />} />
-                {/* Private Routes */}
+
+                {/* Conditional rendering of protected routes */}
+                {isLoggedIn ? (
+                    <>
+                        <Route path='/statement' element={<About orders={orders} />} />
+                        <Route path='/add' element={<Add addOrder={addOrder} />} />
+                    </>
+                ) : (
+                    <Route path='*' element={<Navigate to='/login' replace />} />
+                )}
             </Routes>
         </div>
     );
