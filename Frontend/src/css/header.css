@@ -1,0 +1,67 @@
+/* header.css */
+.header-sec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #3e3e44;
+
+}
+
+.logo-placeholder {
+    flex: 0 0 auto;
+    margin-right: 20px;
+}
+
+.logo-image {
+    width: 100px;
+    height: auto;
+}
+
+.avatar-container {
+    display: flex;
+    gap: 15px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.avatar-wrapper:hover .tooltip {
+    opacity: 1;
+}
+
+.crown-icon {
+    margin-right: 5px; /* Adjust spacing between crown and name */
+    font-size: 14px; /* Adjust size of crown icon */
+}

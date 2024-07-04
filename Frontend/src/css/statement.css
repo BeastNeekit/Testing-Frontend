@@ -1,0 +1,121 @@
+.statement-container {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.date-picker {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 180px;
+}
+
+.date-separator {
+    margin: 0 5px;
+}
+
+.dropdown {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.search {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 180px;
+}
+
+.search-btn {
+    padding: 10px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.search-btn:hover {
+    background-color: #45a049;
+}
+
+.export-btn {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+
+.filtered-orders table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.filtered-orders th,
+.filtered-orders td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.filtered-orders th {
+    background-color: #f4f4f4;
+}
+
+.filtered-orders tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.filtered-orders tr:hover {
+    background-color: #f1f1f1;
+}
+
+.refresh-icon {
+    margin-left: 10px;
+    color: #4CAF50;
+}
+
+.refresh-icon:hover {
+    color: #45a049;
+}
