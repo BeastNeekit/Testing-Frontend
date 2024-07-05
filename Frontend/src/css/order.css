@@ -329,6 +329,8 @@ thead {
         border-width: 1px;
     }
 
+    th:nth-child(5), td:nth-child(5) { display: none; }
+    th:nth-child(7), td:nth-child(7) { display: none; }
 }
 
 .product-form {
