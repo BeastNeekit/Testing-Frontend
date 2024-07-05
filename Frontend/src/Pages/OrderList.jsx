@@ -80,8 +80,8 @@ const OrderList = ({ orders }) => {
                     <tr>
                         <th>Avatar</th>
                         <th>Customer Name</th>
-                        <th>Product Name</th>
                         <th>Paid Amount</th>
+                        <th>Product Name</th>
                         <th>Payment Status</th>
                         <th>Status</th>
                         <th>Date</th>
@@ -92,11 +92,11 @@ const OrderList = ({ orders }) => {
                     {visibleOrders.map((order, index) => (
                         <tr key={index}>
                             <td>
-                                <Avatar customerName={order.customerName} />
+                                <Avatar customerName={order.customerName}/>
                             </td>
                             <td>{order.customerName}</td>
-                            <td>{order.productName}</td>
                             <td>{order.paidNumber}</td>
+                            <td>{order.productName}</td>
                             <td className={order.paymentStatus === 'Paid' ? 'primary' : 'secondary'}>
                                 {order.paymentStatus}
                             </td>

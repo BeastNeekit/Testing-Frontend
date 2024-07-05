@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/rate.css';
 import ProductDetailPopup from './Extras/ProductDetailPopup';
 import { backUrl } from "../Urls";
+import { formatToNepaliDigits } from './Extras/utils';
 
 const Rate = () => {
     const [products, setProducts] = useState([]);
@@ -69,19 +70,16 @@ const Rate = () => {
         );
     };
 
-
-
     return (
         <div className="container">
-
-            <h1>Product Rate</h1>
+            <h1><b>सामानको मूल्य</b></h1>
             <table className="rate-table">
                 <thead>
                 <tr>
-                    <th>Product Image</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Update Time</th>
+                    <th>तस्बिर</th>
+                    <th>सामानको नाम</th>
+                    <th>मूल्य</th>
+                    <th>प्रवेश समय</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,8 +89,8 @@ const Rate = () => {
                             <img src={product.image} alt={product.name} style={{ width: '100px', height: '100px', marginLeft: '25%' }} />
                         </td>
                         <td>{product.name}</td>
-                        <td>{product.price}</td>
-                        <td>{product.formattedUpdateTime}</td>
+                        <td>{formatToNepaliDigits(product.price.toString())}</td> {/* Format price to Nepali digits */}
+                        <td>{formatToNepaliDigits(product.formattedUpdateTime.toString())}</td>
                     </tr>
                 ))}
                 </tbody>
