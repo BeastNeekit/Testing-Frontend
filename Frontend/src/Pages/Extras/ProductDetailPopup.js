@@ -1,5 +1,6 @@
 import React from 'react';
-import '../../css/rate.css'; // Import your CSS file for ProductDetailPopup styling
+import '../../css/rate.css';
+import {formatToNepaliDigits} from "./utils"; // Import your CSS file for ProductDetailPopup styling
 
 const ProductDetailPopup = ({ product, onClose }) => (
     <div className="popup">
@@ -7,8 +8,8 @@ const ProductDetailPopup = ({ product, onClose }) => (
             <span className="close" onClick={onClose}>&times;</span>
             <h2><strong>{product.name}</strong></h2>
             <img src={product.image} alt={product.name} className="product-image" />
-            <p>Price: Rs.{product.price}</p>
-            <p>Update Time: {product.formattedUpdateTime}</p>
+            <p>मूल्य: {formatToNepaliDigits(product.price.toString())} रु</p>
+            <p>प्रवेश समय: {formatToNepaliDigits(product.formattedUpdateTime.toString())}</p>
         </div>
     </div>
 );

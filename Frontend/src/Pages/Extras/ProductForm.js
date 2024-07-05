@@ -7,6 +7,7 @@ const ProductForm = ({ onSubmit }) => {
     const [image, setImage] = useState('');
     const [price, setPrice] = useState('');
     const [updateTime, setUpdateTime] = useState(new Date().toISOString().slice(0, 16)); // Initial value with current time
+    const [message, setMessage] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,12 +29,13 @@ const ProductForm = ({ onSubmit }) => {
             // Send a POST request to your backend API
             const response = await fetch(`${backUrl}/products`, {
             });
-
+            const result = await response.json();
             if (!response.ok) {
                 throw new Error('Failed to add product');
             }
 
             // Clear form fields after successful submission
+            setMessage({ type: 'success', text: result.message });
             setName('');
             setImage('');
             setPrice('');
@@ -52,6 +54,11 @@ const ProductForm = ({ onSubmit }) => {
 
         <form onSubmit={handleSubmit} className="product-form">
             <h3>Add Product</h3>
+            {message && (
+                <div className={`message ${message.type}`}>
+                    {message.text}
+                </div>
+            )}
             <input
                 placeholder="Product Name:"
                 type="text"
