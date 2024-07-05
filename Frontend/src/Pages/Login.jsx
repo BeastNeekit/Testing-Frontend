@@ -101,9 +101,9 @@ const LoginForm = () => {
                 </Button>
             </form>
 
-            <Text mt={4} textAlign="center">
-                Don't have an account? <Link to="/signup" style={{ color: "crimson" }}>Sign Up</Link>
-            </Text>
+            {/*<Text mt={4} textAlign="center">*/}
+            {/*    Don't have an account? <Link to="/signup" style={{ color: "crimson" }}>Sign Up</Link>*/}
+            {/*</Text>*/}
         </Box>
     );
 };
