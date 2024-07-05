@@ -100,18 +100,6 @@ const NavbarSignUp = () => {
               </Text>
             </Link>
 
-            <NavLink to={"/signup"}>
-              <Text
-                  _hover={{
-                    color: "#ff6733",
-                  }}
-                  fontSize={"1.2rem"}
-                  fontWeight={"semibold"}
-              >
-                Sign Up
-              </Text>
-            </NavLink>
-
             <Link to={"/login"}>
               <Text
                   _hover={{
@@ -120,9 +108,21 @@ const NavbarSignUp = () => {
                   fontSize={"1.2rem"}
                   fontWeight={"semibold"}
               >
-                Log In
+               LogIn
               </Text>
             </Link>
+
+            <NavLink to={"/rate"}>
+              <Text
+                  _hover={{
+                    color: "#ff6733",
+                  }}
+                  fontSize={"1.2rem"}
+                  fontWeight={"semibold"}
+              >
+                मूल्या
+              </Text>
+            </NavLink>
 
             <Link to={"/add" } >
               <Text
@@ -132,7 +132,7 @@ const NavbarSignUp = () => {
                   fontSize={"1.2rem"}
                   fontWeight={"semibold"}
               >
-                Add Detail
+                AddDetail
               </Text>
             </Link>
 
@@ -177,18 +177,6 @@ const NavbarSignUp = () => {
                     </Text>
                   </Link>
 
-                  <NavLink to={"/signup"}>
-                    <Text
-                        _hover={{
-                          color: "#ff6733",
-                        }}
-                        fontSize={"1.2rem"}
-                        fontWeight={"semibold"}
-                    >
-                      Sign Up
-                    </Text>
-                  </NavLink>
-
                   <Link to={"/login"}>
                     <Text
                         _hover={{
@@ -197,9 +185,21 @@ const NavbarSignUp = () => {
                         fontSize={"1.2rem"}
                         fontWeight={"semibold"}
                     >
-                      Log In
+                      LogIn
                     </Text>
                   </Link>
+
+                  <NavLink to={"/rate"}>
+                    <Text
+                        _hover={{
+                          color: "#ff6733",
+                        }}
+                        fontSize={"1.2rem"}
+                        fontWeight={"semibold"}
+                    >
+                      रेट
+                    </Text>
+                  </NavLink>
 
                   <Link to={"/add"} >
                     <Text

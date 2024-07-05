@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {Navigate, Route, Routes} from 'react-router-dom';
 import Login from '../Pages/Login';
-import SignUp from '../Pages/SignUp';
+import Rate from '../Pages/Rate';
 import Home from '../Pages/Home';
 import About from '../Pages/About';
 import Add from "./InputDetail";
@@ -49,10 +49,9 @@ const AllRoutes = () => {
         <div>
             <Routes>
                 <Route path='/login' element={<Login />} />
-                <Route path='/signup' element={<SignUp />} />
+                <Route path='/rate' element={<Rate />} />
                 <Route path='/' element={<Home />} />
 
-                {/* Conditional rendering of protected routes */}
                 {isLoggedIn ? (
                     <>
                         <Route path='/statement' element={<About orders={orders} />} />

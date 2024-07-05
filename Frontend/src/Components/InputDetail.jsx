@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import '../css/order.css';
 import { backUrl } from "../Urls";
 import {AuthContext} from "./AuthContext";
+import ProductForm from "../Pages/Extras/ProductForm";
 
 const InputDetail = ({ addOrder }) => {
     const [customerName, setCustomerName] = useState('');
@@ -65,6 +66,30 @@ const InputDetail = ({ addOrder }) => {
         setProductName('Advance');
     };
 
+
+    const addProduct = async (newProduct) => {
+        try {
+            const response = await fetch(`${backUrl}/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProduct),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add product');
+            }
+
+            // Optionally, fetch products again to update the list with the newly added product
+            // fetchProducts();
+
+        } catch (error) {
+            console.error('Error adding product:', error);
+            // Handle error as needed (e.g., show error message)
+        }
+    };
+
     return (
         <div className="form-container">
             <h2>ADD DETAILS</h2>
@@ -116,10 +141,13 @@ const InputDetail = ({ addOrder }) => {
                     </label>
                 </div>
                 <button type="submit">Add Detail</button>
+                <br/>
             </form>
-            <div><br/>
-                <button onClick={handleLogout}>Logout</button>
+            <div>
             </div>
+            <ProductForm onSubmit={addProduct}/>
+            <br/>
+            <button onClick={handleLogout}>Logout</button>
         </div>
     );
 };
