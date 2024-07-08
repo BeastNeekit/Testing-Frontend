@@ -27,8 +27,10 @@ const Rate = () => {
                 ...product,
                 formattedUpdateTime: new Date(product.createdAt).toISOString().split('T')[0],
             }));
-            setProducts(formattedProducts);
-            setTotalPages(Math.ceil(formattedProducts.length / itemsPerPage)); // Calculate total pages
+            // Sort products in descending order by creation date
+            const sortedProducts = formattedProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setProducts(sortedProducts);
+            setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage)); // Calculate total pages
         } catch (error) {
             console.error('Error fetching products:', error);
             // Handle error as needed (e.g., show error message)

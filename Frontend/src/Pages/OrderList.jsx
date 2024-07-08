@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/order.css';
 
-
 const defaultAvatar = '/assets/default-avatar.jpg';
 
 const OrderList = ({ orders }) => {
@@ -10,16 +9,19 @@ const OrderList = ({ orders }) => {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     useEffect(() => {
-        setVisibleOrders(orders.slice(0, 3));
+        const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setVisibleOrders(sortedOrders.slice(0, 3));
     }, [orders]);
 
     const handleShowAll = () => {
-        setVisibleOrders(orders);
+        const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setVisibleOrders(sortedOrders);
         setShowAll(true);
     };
 
     const handleHide = () => {
-        setVisibleOrders(orders.slice(0, 3));
+        const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setVisibleOrders(sortedOrders.slice(0, 3));
         setShowAll(false);
     };
 
