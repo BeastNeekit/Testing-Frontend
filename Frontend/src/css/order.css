@@ -378,3 +378,31 @@ thead {
 
 
 
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tabs button.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.tabs button:hover:not(.active) {
+    background-color: #ddd;
+    color: #333;
+}
