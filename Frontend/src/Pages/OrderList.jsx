@@ -7,21 +7,32 @@ const OrderList = ({ orders }) => {
     const [visibleOrders, setVisibleOrders] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [selectedDate, setSelectedDate] = useState('');
+
+    useEffect(() => {
+        if (orders.length > 0) {
+            const uniqueDates = [...new Set(orders.map(order => new Date(order.date).toISOString().slice(0, 10)))];
+            setSelectedDate(uniqueDates[0]);
+        }
+    }, [orders]);
 
     useEffect(() => {
         const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setVisibleOrders(sortedOrders.slice(0, 3));
-    }, [orders]);
+        const filteredOrders = sortedOrders.filter(order => new Date(order.date).toISOString().slice(0, 10) === selectedDate);
+        setVisibleOrders(filteredOrders.slice(0, 3));
+    }, [orders, selectedDate]);
 
     const handleShowAll = () => {
         const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setVisibleOrders(sortedOrders);
+        const filteredOrders = sortedOrders.filter(order => new Date(order.date).toISOString().slice(0, 10) === selectedDate);
+        setVisibleOrders(filteredOrders);
         setShowAll(true);
     };
 
     const handleHide = () => {
         const sortedOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date));
-        setVisibleOrders(sortedOrders.slice(0, 3));
+        const filteredOrders = sortedOrders.filter(order => new Date(order.date).toISOString().slice(0, 10) === selectedDate);
+        setVisibleOrders(filteredOrders.slice(0, 3));
         setShowAll(false);
     };
 
@@ -73,8 +84,21 @@ const OrderList = ({ orders }) => {
         return <img src={avatarSrc} alt={customerName} className="avatar" />;
     };
 
+    const uniqueDates = [...new Set(orders.map(order => new Date(order.date).toISOString().slice(0, 10)))];
+
     return (
         <div>
+            <div className="tabs">
+                {uniqueDates.map(date => (
+                    <button
+                        key={date}
+                        className={date === selectedDate ? 'active' : ''}
+                        onClick={() => setSelectedDate(date)}
+                    >
+                        {date}
+                    </button>
+                ))}
+            </div>
             <div className="recent-orders">
                 <h1>Recent Details</h1>
                 <table>

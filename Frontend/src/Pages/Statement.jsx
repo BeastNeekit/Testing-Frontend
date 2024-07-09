@@ -6,12 +6,14 @@ const Statement = ({ orders }) => {
     const [status, setStatus] = useState('All Status');
     const [product, setProduct] = useState('Select All');
     const [search, setSearch] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     useEffect(() => {
         setFilteredOrders(orders || []);
     }, [orders]);
 
-    const filterOrders = (status, product, search) => {
+    const filterOrders = (status, product, search, startDate, endDate) => {
         let filtered = orders || [];
 
         if (status !== 'All Status') {
@@ -26,31 +28,53 @@ const Statement = ({ orders }) => {
             filtered = filtered.filter(order => order.customerName.toLowerCase().includes(search.toLowerCase()));
         }
 
+        if (startDate) {
+            filtered = filtered.filter(order => new Date(order.date) >= new Date(startDate));
+        }
+
+        if (endDate) {
+            filtered = filtered.filter(order => new Date(order.date) <= new Date(endDate));
+        }
+
         setFilteredOrders(filtered);
     };
 
     const handleStatusChange = (e) => {
         const newStatus = e.target.value;
         setStatus(newStatus);
-        filterOrders(newStatus, product, search);
+        filterOrders(newStatus, product, search, startDate, endDate);
     };
 
     const handleProductChange = (e) => {
         const newProduct = e.target.value;
         setProduct(newProduct);
-        filterOrders(status, newProduct, search);
+        filterOrders(status, newProduct, search, startDate, endDate);
     };
 
     const handleSearchChange = (e) => {
         const newSearch = e.target.value;
         setSearch(newSearch);
-        filterOrders(status, product, newSearch);
+        filterOrders(status, product, newSearch, startDate, endDate);
+    };
+
+    const handleStartDateChange = (e) => {
+        const newStartDate = e.target.value;
+        setStartDate(newStartDate);
+        filterOrders(status, product, search, newStartDate, endDate);
+    };
+
+    const handleEndDateChange = (e) => {
+        const newEndDate = e.target.value;
+        setEndDate(newEndDate);
+        filterOrders(status, product, search, startDate, newEndDate);
     };
 
     const handleRefresh = () => {
         setStatus('All Status');
         setProduct('Select All');
         setSearch('');
+        setStartDate('');
+        setEndDate('');
         setFilteredOrders(orders || []);
     };
 
@@ -70,6 +94,8 @@ const Statement = ({ orders }) => {
                     <option>Advance</option>
                 </select>
                 <input type="text" className="search" placeholder="Search by Name" value={search} onChange={handleSearchChange} />
+                <input type="date" className="date-picker" value={startDate} onChange={handleStartDateChange} />
+                <input type="date" className="date-picker" value={endDate} onChange={handleEndDateChange} />
                 <button className="search-btn">&#x1F50E;</button>
             </div>
             {filteredOrders && filteredOrders.length > 0 ? (
