@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState} from 'react';
 import '../css/order.css';
 import { backUrl } from "../Urls";
-import { AuthContext } from "./AuthContext";
+import {AuthContext} from "./AuthContext";
 import ProductForm from "../Pages/Extras/ProductForm";
 
 const InputDetail = ({ addOrder }) => {
@@ -11,15 +11,9 @@ const InputDetail = ({ addOrder }) => {
     const [status, setStatus] = useState('Active');
     const [message, setMessage] = useState(null);
     const { logout } = useContext(AuthContext);
-
-    useEffect(() => {
-        syncCachedData();
-    }, []);
-
     const handleLogout = () => {
         logout(); // Clears isLoggedIn and expiry time
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -38,8 +32,9 @@ const InputDetail = ({ addOrder }) => {
             date: nepalTime,
         };
 
+
         try {
-            const response = await fetch(`${backUrl}/order/try`, {
+            const response = await fetch(`${backUrl}/oder/try`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,14 +56,14 @@ const InputDetail = ({ addOrder }) => {
                 setMessage({ type: 'error', text: result.message });
             }
         } catch (error) {
-            setMessage({ type: 'error', text: 'Error adding detail, data saved locally' });
-            saveToLocalCache(newOrder);
+            setMessage({ type: 'error', text: 'Error adding detail' });
         }
     };
 
     const handleAdvanceClick = () => {
         setProductName('Advance');
     };
+
 
     const addProduct = async (newProduct) => {
         try {
@@ -91,39 +86,6 @@ const InputDetail = ({ addOrder }) => {
             console.error('Error adding product:', error);
             // Handle error as needed (e.g., show error message)
         }
-    };
-
-    const saveToLocalCache = (order) => {
-        const cachedOrders = JSON.parse(localStorage.getItem('cachedOrders')) || [];
-        cachedOrders.push(order);
-        localStorage.setItem('cachedOrders', JSON.stringify(cachedOrders));
-    };
-
-    const syncCachedData = async () => {
-        const cachedOrders = JSON.parse(localStorage.getItem('cachedOrders')) || [];
-        if (cachedOrders.length === 0) return;
-
-        for (const order of cachedOrders) {
-            try {
-                const response = await fetch(`${backUrl}/order/try`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(order),
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to sync order');
-                }
-            } catch (error) {
-                console.error('Error syncing order:', error);
-                return;
-            }
-        }
-
-        localStorage.removeItem('cachedOrders');
-        setMessage({ type: 'success', text: 'Cached data synced successfully' });
     };
 
     return (
@@ -181,7 +143,7 @@ const InputDetail = ({ addOrder }) => {
             </form>
             <div>
             </div>
-            <ProductForm onSubmit={addProduct} />
+            <ProductForm onSubmit={addProduct}/>
             <br/>
             <button onClick={handleLogout}>Logout</button>
         </div>
