@@ -110,7 +110,7 @@ const InputDetail = ({ addOrder }) => {
 
         for (const order of cachedOrders) {
             try {
-                const response = await fetch(`${backUrl}/order/try`, {
+                const response = await fetch(`${backUrl}/oder/try`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
