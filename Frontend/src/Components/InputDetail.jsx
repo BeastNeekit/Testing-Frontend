@@ -44,7 +44,7 @@ const InputDetail = ({ addOrder }) => {
         };
 
         try {
-            const response = await fetch(`${backUrl}/order/try`, {
+            const response = await fetch(`${backUrl}/oder/try`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
