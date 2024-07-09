@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Box,
   Drawer,
@@ -7,26 +7,24 @@ import {
   Flex,
   HStack,
   IconButton,
-  Text, useDisclosure,
+  Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import {  HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, NavLink } from "react-router-dom";
 import '../css/header.css';
 
-
 const avatars = [
-  { id: 1, src: '/assets/avatars/rashmi.jpg', alt: 'Shop Owner 2', name: 'Rashmi'      },
+  { id: 1, src: '/assets/avatars/rashmi.jpg', alt: 'Shop Owner 2', name: 'Rashmi' },
   { id: 2, src: '/assets/avatars/neekit.jpg', alt: 'Shop Owner 1', name: 'Neekit', hasCrown: true },
   { id: 3, src: '/assets/default-avatar.jpg', alt: 'Shop Owner 3', name: 'Shop Owner 3' },
   { id: 4, src: '/assets/default-avatar.jpg', alt: 'Shop Owner 4', name: 'Shop Owner 4' }
 ];
 
-
 const NavbarSignUp = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
-
 
   const [hoveredAvatar, setHoveredAvatar] = useState(null);
 
@@ -39,8 +37,7 @@ const NavbarSignUp = () => {
   };
 
   return (
-
-      <Box    >
+      <Box>
         <Flex
             w="100%"
             align="center"
@@ -51,17 +48,19 @@ const NavbarSignUp = () => {
         >
           <Link to={"/"}>
             <div className="logo-placeholder">
-              <img src="/assets/logo.png" alt="Logo" className="logo-image"/>
+              <img src="/assets/logo.png" alt="Logo" className="logo-image" />
             </div>
           </Link>
 
           <div className="avatar-container">
             {avatars.map((avatar) => (
-                <div key={avatar.id} className="avatar-wrapper"
-                     onMouseEnter={() => handleMouseEnter(avatar.id)}
-                     onMouseLeave={handleMouseLeave}
+                <div
+                    key={avatar.id}
+                    className="avatar-wrapper"
+                    onMouseEnter={() => handleMouseEnter(avatar.id)}
+                    onMouseLeave={handleMouseLeave}
                 >
-                  <img src={avatar.src} alt={avatar.alt} className="avatar"/>
+                  <img src={avatar.src} alt={avatar.alt} className="avatar" />
                   {hoveredAvatar === avatar.id && (
                       <div className="tooltip">
                         {avatar.hasCrown && <span className="crown-icon">👑</span>}
@@ -88,7 +87,7 @@ const NavbarSignUp = () => {
               justifyContent="flex-end"
               paddingRight={"10"}
           >
-            <Link to={"/"} >
+            <Link to={"/"}>
               <Text
                   _hover={{
                     color: "#ff6733",
@@ -108,7 +107,7 @@ const NavbarSignUp = () => {
                   fontSize={"1.2rem"}
                   fontWeight={"semibold"}
               >
-               LogIn
+                LogIn
               </Text>
             </Link>
 
@@ -124,7 +123,7 @@ const NavbarSignUp = () => {
               </Text>
             </NavLink>
 
-            <Link to={"/add" } >
+            <Link to={"/add"}>
               <Text
                   _hover={{
                     color: "#ff6733",
@@ -136,7 +135,7 @@ const NavbarSignUp = () => {
               </Text>
             </Link>
 
-            <Link to={"/Statement"} >
+            <Link to={"/statement"}>
               <Text
                   _hover={{
                     color: "#ff6733",
@@ -147,25 +146,14 @@ const NavbarSignUp = () => {
                 Statement
               </Text>
             </Link>
-
           </HStack>
         </Flex>
         {isOpen && (
-
-            <Drawer
-                isOpen={isOpen}
-                placement="top"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-            >
-              <DrawerContent
-                  border={"1px solid #1f2a37"}
-                  bgColor={"#1f2a37"}
-                  color={"rgb(235, 235, 235)"}
-              >
+            <Drawer isOpen={isOpen} placement="top" onClose={onClose} finalFocusRef={btnRef}>
+              <DrawerContent border={"1px solid #1f2a37"} bgColor={"#1f2a37"} color={"rgb(235, 235, 235)"}>
                 <DrawerCloseButton />
-                <VStack  m={8} align={"stretch"} spacing={10}>
-                  <Link to={"/"} >
+                <VStack m={8} align={"stretch"} spacing={8}>
+                  <Link to={"/"} onClick={onClose}>
                     <Text
                         _hover={{
                           color: "#ff6733",
@@ -177,7 +165,7 @@ const NavbarSignUp = () => {
                     </Text>
                   </Link>
 
-                  <Link to={"/login"}>
+                  <Link to={"/login"} onClick={onClose}>
                     <Text
                         _hover={{
                           color: "#ff6733",
@@ -189,7 +177,7 @@ const NavbarSignUp = () => {
                     </Text>
                   </Link>
 
-                  <NavLink to={"/rate"}>
+                  <NavLink to={"/rate"} onClick={onClose}>
                     <Text
                         _hover={{
                           color: "#ff6733",
@@ -197,11 +185,11 @@ const NavbarSignUp = () => {
                         fontSize={"1.2rem"}
                         fontWeight={"semibold"}
                     >
-                      रेट
+                      मूल्या
                     </Text>
                   </NavLink>
 
-                  <Link to={"/add"} >
+                  <Link to={"/add"} onClick={onClose}>
                     <Text
                         _hover={{
                           color: "#ff6733",
@@ -213,7 +201,7 @@ const NavbarSignUp = () => {
                     </Text>
                   </Link>
 
-                  <Link to={"/statement"} >
+                  <Link to={"/statement"} onClick={onClose}>
                     <Text
                         _hover={{
                           color: "#ff6733",
@@ -224,12 +212,12 @@ const NavbarSignUp = () => {
                       Statement
                     </Text>
                   </Link>
-
                 </VStack>
               </DrawerContent>
             </Drawer>
-          )}
+        )}
       </Box>
   );
 };
+
 export default NavbarSignUp;
