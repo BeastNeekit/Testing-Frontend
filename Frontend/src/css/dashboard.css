@@ -1,0 +1,80 @@
+/* src/Pages/Dashboard/dashboard.css */
+.dashboard-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.dashboard-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #090909;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+
+
+.tasks  {
+    background-color: rgb(187, 247, 208);
+}
+
+.credits {
+    background-color: rgb(217, 249, 157);
+}
+
+.affiliates {
+    background-color: rgb(254, 202, 202);
+}
+
+.tasks p, .credits p, .affiliates p {
+    color: rgba(0, 0, 0, 0.41);
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.chart-container {
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+    .dashboard-cards {
+        flex-direction: column;
+    }
+
+    .card {
+        margin: 10px 0;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 15px;
+        margin: 10px 0;
+    }
+
+    .tasks p, .credits p, .affiliates p {
+        font-size: 1em;
+    }
+
+    .chart-container {
+        padding: 15px;
+    }
+}
