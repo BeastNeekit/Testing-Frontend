@@ -7,6 +7,7 @@ import About from '../Pages/About';
 import Add from "./InputDetail";
 import { backUrl } from '../Urls';
 import { AuthContext } from './AuthContext';
+import Dashboard from "../Components/Dashboard";
 
 const AllRoutes = () => {
     const { isLoggedIn, logout } = useContext(AuthContext);
@@ -54,6 +55,7 @@ const AllRoutes = () => {
 
                 {isLoggedIn ? (
                     <>
+                        <Route path='/dashboard' element={<Dashboard />} />
                         <Route path='/statement' element={<About orders={orders} />} />
                         <Route path='/add' element={<Add addOrder={addOrder} />} />
                     </>
