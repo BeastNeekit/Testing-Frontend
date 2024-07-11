@@ -24,8 +24,7 @@ const Dashboard = () => {
 
         fetchOrders();
     }, []);
-
-    const processOrderData = (orders) => {
+const processOrderData = (orders) => {
         const incomeData = {};
         const highestEarningsData = {};
         const dueAmountData = {};
@@ -36,12 +35,15 @@ const Dashboard = () => {
 
         orders.forEach(order => {
             const date = new Date(order.date);
-            const formattedDate = date.toLocaleDateString('en-GB');
+            const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // dd/mm/yyyy format
             const earnings = parseFloat(order.paidNumber);
 
             if (earnings !== 0) {
                 if (earnings > 0) {
                     total += earnings;
+
+                    // Adjust time to be the same day for grouping
+                    date.setHours(0, 0, 0, 0);
 
                     if (incomeData[formattedDate]) {
                         incomeData[formattedDate] += earnings;
@@ -73,11 +75,12 @@ const Dashboard = () => {
                 }
             }
         });
+
         console.log('Total earnings:', total);
         console.log('Income data:', incomeData);
         console.log('Highest earnings data:', highestEarningsData);
         console.log('Due amount data:', dueAmountData);
-        
+
         setTotalIncome(total);
 
         if (minDate && maxDate) {
@@ -89,10 +92,10 @@ const Dashboard = () => {
 
         // Prepare chart data for each day
         const chartDataArray = [];
-        let currentDate = minDate;
+        let currentDate = new Date(minDate);
 
         while (currentDate <= maxDate) {
-            const formattedDate = currentDate.toLocaleDateString('en-GB');
+            const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
             const earningsForDate = incomeData[formattedDate] || 0;
             const highestEarningsForDate = highestEarningsData[formattedDate] || 0;
             const dueAmountForDate = dueAmountData[formattedDate] || 0;
@@ -104,12 +107,15 @@ const Dashboard = () => {
                 dueAmount: dueAmountForDate,
             });
 
-            currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+            // Move to the next day
+            currentDate.setDate(currentDate.getDate() + 1);
+            currentDate.setHours(0, 0, 0, 0); // Reset time to start of the day
         }
+
         console.log('Chart data:', chartDataArray);
         setChartData(chartDataArray);
-    };
-
+    }; 
+       
 
     return (
         <div className="dashboard-container">
