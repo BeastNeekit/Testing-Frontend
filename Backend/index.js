@@ -20,7 +20,7 @@ app.use(cors(
       credentials: true
     }
 ));
-app.use("/oder", orderRoutes);
+app.use("/order", orderRoutes);
 app.use('/user', userRoutes);
 app.use('/products', productRoutes);
 
