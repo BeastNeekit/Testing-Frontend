@@ -73,7 +73,10 @@ const Dashboard = () => {
                 }
             }
         });
-
+    console.log('Total earnings:', total);
+    console.log('Income data:', incomeData);
+    console.log('Highest earnings data:', highestEarningsData);
+    console.log('Due amount data:', dueAmountData);
         setTotalIncome(total);
 
         if (minDate && maxDate) {
@@ -102,7 +105,7 @@ const Dashboard = () => {
 
             currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
         }
-
+  console.log('Chart data:', chartDataArray);
         setChartData(chartDataArray);
     };
 
