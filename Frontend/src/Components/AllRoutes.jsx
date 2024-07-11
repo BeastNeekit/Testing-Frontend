@@ -27,7 +27,7 @@ const AllRoutes = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`${backUrl}/oder/try`);
+            const response = await fetch(`${backUrl}/order/try`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
