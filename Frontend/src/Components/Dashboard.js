@@ -24,7 +24,8 @@ const Dashboard = () => {
 
         fetchOrders();
     }, []);
-const processOrderData = (orders) => {
+
+  const processOrderData = (orders) => {
         const incomeData = {};
         const highestEarningsData = {};
         const dueAmountData = {};
@@ -35,15 +36,13 @@ const processOrderData = (orders) => {
 
         orders.forEach(order => {
             const date = new Date(order.date);
+            date.setUTCHours(0, 0, 0, 0); // Set UTC hours to 0 to standardize for UTC timezone
             const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // dd/mm/yyyy format
             const earnings = parseFloat(order.paidNumber);
 
             if (earnings !== 0) {
                 if (earnings > 0) {
                     total += earnings;
-
-                    // Adjust time to be the same day for grouping
-                    date.setHours(0, 0, 0, 0);
 
                     if (incomeData[formattedDate]) {
                         incomeData[formattedDate] += earnings;
@@ -95,6 +94,7 @@ const processOrderData = (orders) => {
         let currentDate = new Date(minDate);
 
         while (currentDate <= maxDate) {
+            currentDate.setUTCHours(0, 0, 0, 0); // Set UTC hours to 0 to standardize for UTC timezone
             const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
             const earningsForDate = incomeData[formattedDate] || 0;
             const highestEarningsForDate = highestEarningsData[formattedDate] || 0;
@@ -107,15 +107,13 @@ const processOrderData = (orders) => {
                 dueAmount: dueAmountForDate,
             });
 
-            // Move to the next day
             currentDate.setDate(currentDate.getDate() + 1);
-            currentDate.setHours(0, 0, 0, 0); // Reset time to start of the day
         }
 
         console.log('Chart data:', chartDataArray);
         setChartData(chartDataArray);
-    }; 
-       
+    };
+
 
     return (
         <div className="dashboard-container">
