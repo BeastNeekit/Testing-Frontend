@@ -13,7 +13,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch(`${backUrl}/order/try`);
+                const response = await fetch(`${backUrl}/oder/try`);
                 const data = await response.json();
                 setOrders(data);
                 processOrderData(data);
@@ -37,31 +37,41 @@ const Dashboard = () => {
         orders.forEach(order => {
             const date = new Date(order.date);
             const formattedDate = date.toLocaleDateString('en-GB');
+            const formattedHour = date.getHours();
             const earnings = parseFloat(order.paidNumber);
 
             if (earnings !== 0) {
                 if (earnings > 0) {
                     total += earnings;
 
-                    if (incomeData[formattedDate]) {
-                        incomeData[formattedDate] += earnings;
+                    if (!incomeData[formattedDate]) {
+                        incomeData[formattedDate] = {};
+                    }
+                    if (incomeData[formattedDate][formattedHour]) {
+                        incomeData[formattedDate][formattedHour] += earnings;
                     } else {
-                        incomeData[formattedDate] = earnings;
+                        incomeData[formattedDate][formattedHour] = earnings;
                     }
 
-                    if (!highestEarningsData[formattedDate] || earnings > highestEarningsData[formattedDate]) {
-                        highestEarningsData[formattedDate] = earnings;
+                    if (!highestEarningsData[formattedDate] || earnings > highestEarningsData[formattedDate][formattedHour]) {
+                        highestEarningsData[formattedDate] = {
+                            ...highestEarningsData[formattedDate],
+                            [formattedHour]: earnings
+                        };
                     }
 
                     if (earnings > highest.amount) {
                         highest.amount = earnings;
-                        highest.date = formattedDate;
+                        highest.date = `${formattedDate} ${formattedHour}:00`;
                     }
                 } else {
-                    if (dueAmountData[formattedDate]) {
-                        dueAmountData[formattedDate] += earnings;
+                    if (!dueAmountData[formattedDate]) {
+                        dueAmountData[formattedDate] = {};
+                    }
+                    if (dueAmountData[formattedDate][formattedHour]) {
+                        dueAmountData[formattedDate][formattedHour] += earnings;
                     } else {
-                        dueAmountData[formattedDate] = earnings;
+                        dueAmountData[formattedDate][formattedHour] = earnings;
                     }
                 }
 
@@ -73,10 +83,10 @@ const Dashboard = () => {
                 }
             }
         });
-    console.log('Total earnings:', total);
-    console.log('Income data:', incomeData);
-    console.log('Highest earnings data:', highestEarningsData);
-    console.log('Due amount data:', dueAmountData);
+        console.log('Total earnings:', total);
+        console.log('Income data:', incomeData);
+        console.log('Highest earnings data:', highestEarningsData);
+        console.log('Due amount data:', dueAmountData);
         setTotalIncome(total);
 
         if (minDate && maxDate) {
@@ -86,26 +96,27 @@ const Dashboard = () => {
 
         setHighestIncome(highest);
 
-        // Prepare chart data for each day
+        // Prepare chart data for each hour
         const chartDataArray = [];
         let currentDate = minDate;
 
         while (currentDate <= maxDate) {
-            const formattedDate = currentDate.toLocaleDateString('en-GB');
-            const earningsForDate = incomeData[formattedDate] || 0;
-            const highestEarningsForDate = highestEarningsData[formattedDate] || 0;
-            const dueAmountForDate = dueAmountData[formattedDate] || 0;
+            for (let hour = 0; hour < 24; hour++) {
+                const formattedDate = currentDate.toLocaleDateString('en-GB');
+                const earningsForDate = incomeData[formattedDate] ? (incomeData[formattedDate][hour] || 0) : 0;
+                const highestEarningsForDate = highestEarningsData[formattedDate] ? (highestEarningsData[formattedDate][hour] || 0) : 0;
+                const dueAmountForDate = dueAmountData[formattedDate] ? (dueAmountData[formattedDate][hour] || 0) : 0;
 
-            chartDataArray.push({
-                date: formattedDate,
-                earnings: earningsForDate,
-                highestEarnings: highestEarningsForDate,
-                dueAmount: dueAmountForDate,
-            });
-
+                chartDataArray.push({
+                    date: `${formattedDate} ${hour}:00`,
+                    earnings: earningsForDate,
+                    highestEarnings: highestEarningsForDate,
+                    dueAmount: dueAmountForDate,
+                });
+            }
             currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
         }
-  console.log('Chart data:', chartDataArray);
+        console.log('Chart data:', chartDataArray);
         setChartData(chartDataArray);
     };
 
