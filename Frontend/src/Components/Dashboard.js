@@ -134,41 +134,38 @@ const Dashboard = () => {
             <div className="chart-container">
                 <h3>INCOME GRAPH</h3>
                 <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={chartData}>
+                    <AreaChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
                         <XAxis dataKey="date" />
                         <YAxis tickFormatter={(value) => `${value}`} />
                         <Tooltip formatter={(value) => `Rs.${value}`} />
                         <Legend verticalAlign="top" height={36} />
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="earnings"
-                            stroke="#8884d8"
-                            strokeWidth={2}
-                            dot={{ r: 5, strokeWidth: 2 }}
-                            activeDot={{ r: 8 }}
+                            stroke="#82ca9d"
+                            fill="#82ca9d"
+                            fillOpacity={0.3}
                         />
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="highestEarnings"
-                            stroke="#ff474c"
-                            strokeWidth={2}
-                            dot={{ r: 5, strokeWidth: 2 }}
-                            activeDot={{ r: 8 }}
+                            stroke="gold"
+                            fill="yellow"
+                            fillOpacity={0.3}
                         />
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="dueAmount"
-                            stroke="#82ca9d"
-                            strokeWidth={2}
-                            dot={{ r: 5, strokeWidth: 2 }}
-                            activeDot={{ r: 8 }}
+                            stroke="#ff474c"
+                            fill="#ff474c"
+                            fillOpacity={0.3}
                         />
-                    </LineChart>
+                    </AreaChart>
                 </ResponsiveContainer>
             </div>
         </div>
-    );
+);
 };
 
 export default Dashboard;
