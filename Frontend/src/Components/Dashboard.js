@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../css/dashboard.css';
-import {  Area, AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart} from 'recharts';
 import { backUrl } from "../Urls";
 
 const Dashboard = () => {
@@ -9,6 +9,8 @@ const Dashboard = () => {
     const [averageIncome, setAverageIncome] = useState(0);
     const [highestIncome, setHighestIncome] = useState({ amount: 0, date: '' });
     const [chartData, setChartData] = useState([]);
+    const [savingData, setSavingData] = useState([]); // State for saving data
+    const [showSavingGraph, setShowSavingGraph] = useState(false); // State for visibility
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -25,10 +27,11 @@ const Dashboard = () => {
         fetchOrders();
     }, []);
 
-  const processOrderData = (orders) => {
+    const processOrderData = (orders) => {
         const incomeData = {};
         const highestEarningsData = {};
         const dueAmountData = {};
+        const savingGraphData = {}; // New object for saving graph data
         let total = 0;
         let minDate = null;
         let maxDate = null;
@@ -40,50 +43,55 @@ const Dashboard = () => {
             const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // dd/mm/yyyy format
             const earnings = parseFloat(order.paidNumber);
 
-            if (earnings !== 0) {
-                if (earnings > 0) {
-                    total += earnings;
-
-                    if (incomeData[formattedDate]) {
-                        incomeData[formattedDate] += earnings;
-                    } else {
-                        incomeData[formattedDate] = earnings;
-                    }
-
-                    if (!highestEarningsData[formattedDate] || earnings > highestEarningsData[formattedDate]) {
-                        highestEarningsData[formattedDate] = earnings;
-                    }
-
-                    if (earnings > highest.amount) {
-                        highest.amount = earnings;
-                        highest.date = formattedDate;
-                    }
+            // Add logic to handle saving graph data
+            if (order.productName === "Saving" && order.paymentStatus === "Due") {
+                const positiveEarnings = Math.abs(earnings); // Convert to positive value
+                if (savingGraphData[formattedDate]) {
+                    savingGraphData[formattedDate] += positiveEarnings;
                 } else {
-                    if (dueAmountData[formattedDate]) {
-                        dueAmountData[formattedDate] += earnings;
-                    } else {
-                        dueAmountData[formattedDate] = earnings;
-                    }
+                    savingGraphData[formattedDate] = positiveEarnings;
                 }
+            } else {
+                if (earnings !== 0) {
+                    if (earnings > 0) {
+                        total += earnings;
 
-                if (!minDate || date < minDate) {
-                    minDate = date;
-                }
-                if (!maxDate || date > maxDate) {
-                    maxDate = date;
+                        if (incomeData[formattedDate]) {
+                            incomeData[formattedDate] += earnings;
+                        } else {
+                            incomeData[formattedDate] = earnings;
+                        }
+
+                        if (!highestEarningsData[formattedDate] || earnings > highestEarningsData[formattedDate]) {
+                            highestEarningsData[formattedDate] = earnings;
+                        }
+
+                        if (earnings > highest.amount) {
+                            highest.amount = earnings;
+                            highest.date = formattedDate;
+                        }
+                    } else {
+                        if (dueAmountData[formattedDate]) {
+                            dueAmountData[formattedDate] += earnings;
+                        } else {
+                            dueAmountData[formattedDate] = earnings;
+                        }
+                    }
+
+                    if (!minDate || date < minDate) {
+                        minDate = date;
+                    }
+                    if (!maxDate || date > maxDate) {
+                        maxDate = date;
+                    }
                 }
             }
         });
 
-        console.log('Total earnings:', total);
-        console.log('Income data:', incomeData);
-        console.log('Highest earnings data:', highestEarningsData);
-        console.log('Due amount data:', dueAmountData);
-
         setTotalIncome(total);
 
         if (minDate && maxDate) {
-            const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24)+1);
+            const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24) + 1);
             setAverageIncome(total / totalDays);
         }
 
@@ -91,6 +99,8 @@ const Dashboard = () => {
 
         // Prepare chart data for each day
         const chartDataArray = [];
+        const savingDataArray = []; // New array for saving data
+
         let currentDate = new Date(minDate);
 
         while (currentDate <= maxDate) {
@@ -99,6 +109,7 @@ const Dashboard = () => {
             const earningsForDate = incomeData[formattedDate] || 0;
             const highestEarningsForDate = highestEarningsData[formattedDate] || 0;
             const dueAmountForDate = dueAmountData[formattedDate] || 0;
+            const savingAmountForDate = savingGraphData[formattedDate] || 0; // Get saving data for the date
 
             chartDataArray.push({
                 date: formattedDate,
@@ -107,13 +118,21 @@ const Dashboard = () => {
                 dueAmount: dueAmountForDate,
             });
 
+            savingDataArray.push({
+                date: formattedDate,
+                saving: savingAmountForDate,
+            });
+
             currentDate.setDate(currentDate.getDate() + 1);
         }
 
-        console.log('Chart data:', chartDataArray);
         setChartData(chartDataArray);
+        setSavingData(savingDataArray); // Set saving data
     };
 
+    const toggleSavingGraph = () => {
+        setShowSavingGraph(!showSavingGraph);
+    };
 
     return (
         <div className="dashboard-container">
@@ -163,9 +182,33 @@ const Dashboard = () => {
                         />
                     </AreaChart>
                 </ResponsiveContainer>
+                <button onClick={toggleSavingGraph}>
+                    {showSavingGraph ? 'Hide Saving Graph' : 'Show Saving Graph'}
+                </button>
+                {showSavingGraph && (
+                    <>
+                        <h3>SAVING GRAPH</h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <AreaChart data={savingData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+                                <XAxis dataKey="date" />
+                                <YAxis tickFormatter={(value) => `${value}`} />
+                                <Tooltip formatter={(value) => `Rs.${value}`} />
+                                <Legend verticalAlign="top" height={36} />
+                                <Area
+                                    type="monotone"
+                                    dataKey="saving"
+                                    stroke="green"
+                                    fill="lime"
+                                    fillOpacity={0.3}
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </>
+                )}
             </div>
         </div>
-);
+    );
 };
 
 export default Dashboard;
