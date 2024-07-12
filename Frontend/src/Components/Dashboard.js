@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../css/dashboard.css';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {  Area, AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { backUrl } from "../Urls";
 
 const Dashboard = () => {
