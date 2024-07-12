@@ -83,7 +83,7 @@ const Dashboard = () => {
         setTotalIncome(total);
 
         if (minDate && maxDate) {
-            const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
+            const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24)+1);
             setAverageIncome(total / totalDays);
         }
 
