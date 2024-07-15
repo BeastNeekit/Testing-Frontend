@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/order.css';
-
+import classNames from 'classnames';
 const defaultAvatar = '/assets/default-avatar.jpg';
 
 const OrderList = ({ orders }) => {
@@ -92,10 +92,10 @@ const OrderList = ({ orders }) => {
                 {uniqueDates.map(date => (
                     <button
                         key={date}
-                        className={date === selectedDate ? 'active' : ''}
+                        className={classNames({active: date === selectedDate})}
                         onClick={() => setSelectedDate(date)}
                     >
-                        {date}
+                        {new Date(date).toLocaleDateString()}
                     </button>
                 ))}
             </div>
@@ -145,14 +145,16 @@ const OrderList = ({ orders }) => {
                 <div className="customer-details-overlay" onClick={() => setSelectedCustomer(null)}>
                     <div className="customer-details" onClick={e => e.stopPropagation()}>
                         <div className="customer-header">
-                            <h2 className="customer-name"> <Avatar customerName={selectedCustomer}/>{selectedCustomer}   </h2>
+                            <h2 className="customer-name"><Avatar customerName={selectedCustomer}/>{selectedCustomer}
+                            </h2>
                         </div>
                         <ul>
                             {selectedOrders.map((order, index) => (
                                 <li key={index}>
-                                    <strong>Date:</strong> {new Date(order.date).toISOString().slice(0, 19).replace('T', ' ')} <br />
-                                    <strong>Product Name:</strong> {order.productName} <br />
-                                    <strong>Paid Amount:</strong> {order.paidNumber} <br />
+                                    <strong>Date:</strong> {new Date(order.date).toISOString().slice(0, 19).replace('T', ' ')}
+                                    <br/>
+                                    <strong>Product Name:</strong> {order.productName} <br/>
+                                    <strong>Paid Amount:</strong> {order.paidNumber} <br/>
                                     <strong>Status:</strong> {order.status}
                                 </li>
                             ))}

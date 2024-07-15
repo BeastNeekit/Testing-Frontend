@@ -3,15 +3,21 @@ import '../css/statement.css';
 
 const Statement = ({ orders }) => {
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [visibleOrders, setVisibleOrders] = useState([]);
     const [status, setStatus] = useState('All Status');
     const [product, setProduct] = useState('Select All');
     const [search, setSearch] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         setFilteredOrders(orders || []);
     }, [orders]);
+
+    useEffect(() => {
+        setVisibleOrders(filteredOrders.slice(0, showAll ? filteredOrders.length : 5));
+    }, [filteredOrders, showAll]);
 
     const filterOrders = (status, product, search, startDate, endDate) => {
         let filtered = orders || [];
@@ -78,6 +84,9 @@ const Statement = ({ orders }) => {
         setFilteredOrders(orders || []);
     };
 
+    const handleShowMore = () => setShowAll(true);
+    const handleShowLess = () => setShowAll(false);
+
     return (
         <div className="statement-container">
             <div className="header">
@@ -109,7 +118,7 @@ const Statement = ({ orders }) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {filteredOrders.map((order, index) => (
+                        {visibleOrders.map((order, index) => (
                             <tr key={index}>
                                 <td>{order.customerName}</td>
                                 <td>{order.paymentStatus}</td>
@@ -118,6 +127,15 @@ const Statement = ({ orders }) => {
                         ))}
                         </tbody>
                     </table>
+                    {filteredOrders.length > 5 && (
+                        <div className="show-more-less">
+                            {!showAll ? (
+                                <button className="show-more" onClick={handleShowMore}>Show More</button>
+                            ) : (
+                                <button className="show-less" onClick={handleShowLess}>Show Less</button>
+                            )}
+                        </div>
+                    )}
                 </div>
             ) : (
                 <p>No orders found.</p>
