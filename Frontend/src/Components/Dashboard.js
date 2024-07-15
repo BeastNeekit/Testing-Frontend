@@ -9,13 +9,15 @@ const Dashboard = () => {
     const [averageIncome, setAverageIncome] = useState(0);
     const [highestIncome, setHighestIncome] = useState({ amount: 0, date: '' });
     const [chartData, setChartData] = useState([]);
-    const [savingData, setSavingData] = useState([]); // State for saving data
-    const [showSavingGraph, setShowSavingGraph] = useState(false); // State for visibility
+    const [savingData, setSavingData] = useState([]);
+    const [investData, setInvestData] = useState([]); // State for invest data
+    const [showSavingGraph, setShowSavingGraph] = useState(false);
+    const [showInvestGraph, setShowInvestGraph] = useState(false); // State for visibility of Invest graph
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch(`${backUrl}/order/try`);
+                const response = await fetch(`${backUrl}/oder/try`);
                 const data = await response.json();
                 setOrders(data);
                 processOrderData(data);
@@ -31,7 +33,8 @@ const Dashboard = () => {
         const incomeData = {};
         const highestEarningsData = {};
         const dueAmountData = {};
-        const savingGraphData = {}; // New object for saving graph data
+        const savingGraphData = {};
+        const investGraphData = {}; // New object for invest graph data
         let total = 0;
         let minDate = null;
         let maxDate = null;
@@ -43,13 +46,19 @@ const Dashboard = () => {
             const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // dd/mm/yyyy format
             const earnings = parseFloat(order.paidNumber);
 
-            // Add logic to handle saving graph data
             if (order.productName === "Saving" && order.paymentStatus === "Due") {
                 const positiveEarnings = Math.abs(earnings); // Convert to positive value
                 if (savingGraphData[formattedDate]) {
                     savingGraphData[formattedDate] += positiveEarnings;
                 } else {
                     savingGraphData[formattedDate] = positiveEarnings;
+                }
+            } else if (order.productName === "Less" && order.paymentStatus === "Due") {
+                const positiveEarnings = Math.abs(earnings); // Convert to positive value
+                if (investGraphData[formattedDate]) {
+                    investGraphData[formattedDate] += positiveEarnings;
+                } else {
+                    investGraphData[formattedDate] = positiveEarnings;
                 }
             } else {
                 if (earnings !== 0) {
@@ -99,7 +108,8 @@ const Dashboard = () => {
 
         // Prepare chart data for each day
         const chartDataArray = [];
-        const savingDataArray = []; // New array for saving data
+        const savingDataArray = [];
+        const investDataArray = []; // New array for invest data
 
         let currentDate = new Date(minDate);
 
@@ -109,7 +119,8 @@ const Dashboard = () => {
             const earningsForDate = incomeData[formattedDate] || 0;
             const highestEarningsForDate = highestEarningsData[formattedDate] || 0;
             const dueAmountForDate = dueAmountData[formattedDate] || 0;
-            const savingAmountForDate = savingGraphData[formattedDate] || 0; // Get saving data for the date
+            const savingAmountForDate = savingGraphData[formattedDate] || 0;
+            const investAmountForDate = investGraphData[formattedDate] || 0; // Get invest data for the date
 
             chartDataArray.push({
                 date: formattedDate,
@@ -123,15 +134,25 @@ const Dashboard = () => {
                 saving: savingAmountForDate,
             });
 
+            investDataArray.push({
+                date: formattedDate,
+                invest: investAmountForDate,
+            });
+
             currentDate.setDate(currentDate.getDate() + 1);
         }
 
         setChartData(chartDataArray);
-        setSavingData(savingDataArray); // Set saving data
+        setSavingData(savingDataArray);
+        setInvestData(investDataArray); // Set invest data
     };
 
     const toggleSavingGraph = () => {
         setShowSavingGraph(!showSavingGraph);
+    };
+
+    const toggleInvestGraph = () => {
+        setShowInvestGraph(!showInvestGraph);
     };
 
     return (
@@ -200,6 +221,30 @@ const Dashboard = () => {
                                     dataKey="saving"
                                     stroke="green"
                                     fill="lime"
+                                    fillOpacity={0.3}
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </>
+                )}
+                <button onClick={toggleInvestGraph}>
+                    {showInvestGraph ? 'Hide Invest Graph' : 'Show Invest Graph'}
+                </button>
+                {showInvestGraph && (
+                    <>
+                        <h3>INVEST GRAPH</h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <AreaChart data={investData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+                                <XAxis dataKey="date" />
+                                <YAxis tickFormatter={(value) => `${value}`} />
+                                <Tooltip formatter={(value) => `Rs.${value}`} />
+                                <Legend verticalAlign="top" height={36} />
+                                <Area
+                                    type="monotone"
+                                    dataKey="invest"
+                                    stroke="#0000ff"
+                                    fill="#00bfff"
                                     fillOpacity={0.3}
                                 />
                             </AreaChart>
