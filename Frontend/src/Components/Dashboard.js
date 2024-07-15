@@ -17,7 +17,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch(`${backUrl}/oder/try`);
+                const response = await fetch(`${backUrl}/order/try`);
                 const data = await response.json();
                 setOrders(data);
                 processOrderData(data);
