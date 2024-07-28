@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../css/rate.css';
-import {formatToNepaliDigits} from "./utils"; // Import your CSS file for ProductDetailPopup styling
+import {formatToNepaliDigits} from "./utils";
 
 const ProductDetailPopup = ({ product, onClose }) => (
     <div className="popup">

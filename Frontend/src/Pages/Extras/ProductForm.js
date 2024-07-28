@@ -12,8 +12,7 @@ const ProductForm = ({ onSubmit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Basic validation (you can add more as needed)
-        if (!name || !image || !price || !updateTime ) {
+        if (!name || !price || !updateTime ) {
             alert('Please fill in all fields.');
             return;
         }
@@ -79,7 +78,6 @@ const ProductForm = ({ onSubmit }) => {
                 type="text"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
-                required
             />
 
 
