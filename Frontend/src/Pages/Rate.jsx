@@ -17,18 +17,29 @@ const Rate = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch(`${backUrl}/products`); // Replace with your backend URL
+            const response = await fetch(`${backUrl}/products`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
-            // Format createdAt to display as 'YYYY-MM-DD'
-            const formattedProducts = data.map(product => ({
+
+            // Create a map to store the latest product for each name
+            const productMap = new Map();
+            data.forEach(product => {
+                const existingProduct = productMap.get(product.name);
+                if (!existingProduct || new Date(product.createdAt) > new Date(existingProduct.createdAt)) {
+                    productMap.set(product.name, product);
+                }
+            });
+
+            // Convert map values to an array and format createdAt
+            const uniqueProducts = Array.from(productMap.values()).map(product => ({
                 ...product,
                 formattedUpdateTime: new Date(product.createdAt).toISOString().split('T')[0],
             }));
+
             // Sort products in descending order by creation date
-            const sortedProducts = formattedProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const sortedProducts = uniqueProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setProducts(sortedProducts);
             setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage)); // Calculate total pages
         } catch (error) {
