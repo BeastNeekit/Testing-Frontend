@@ -110,7 +110,7 @@ const InputDetail = ({ addOrder }) => {
 
         for (const order of cachedOrders) {
             try {
-                const response = await fetch(`${backUrl}/oder/try`, {
+                const response = await fetch(`${backUrl}/order/try`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -130,13 +130,17 @@ const InputDetail = ({ addOrder }) => {
         localStorage.removeItem('cachedOrders');
         setMessage({ type: 'success', text: 'Cached data synced successfully' });
     };
+ const closeMessage = () => {
+        setMessage(null);
+    };
 
     return (
-        <div className="form-container">
+       <div className="form-container">
             <h2>ADD DETAILS</h2>
             {message && (
                 <div className={`message ${message.type}`}>
                     {message.text}
+                    <a className="close-button" onClick={closeMessage}>✖</a>
                 </div>
             )}
             <form onSubmit={handleSubmit}>
