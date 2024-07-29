@@ -8,12 +8,28 @@ const Rate = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState('all');
     const itemsPerPage = 5;
     const [totalPages, setTotalPages] = useState(1);
 
+    const categories = [
+        { value: 'all', label: 'All' },
+        { value: 'cigarette', label: '🚬 चुरोट' },
+        { value: 'noodle', label: '🍜 चाउचाउ' },
+        { value: 'beans', label: '🫘 गेडगुडी' },
+        { value: 'grain', label: '🌾 चामल' },
+        { value: 'soap', label: '🧼 साबुन' },
+        { value: 'electronic', label: '🔌 इलेक्ट्रोनिक' },
+        { value: 'drink', label: '💧 Drinks' },
+        { value: 'sanity', label: '⚕️ Sanity' },
+        { value: 'chocolate', label: '🍫 चकलेट' },
+        { value: 'biscuit', label: '🍪 बिस्कुट' },
+        { value: 'others', label: '🛒 अन्य' },
+    ];
+
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [selectedCategory]);
 
     const fetchProducts = async () => {
         try {
@@ -38,8 +54,13 @@ const Rate = () => {
                 formattedUpdateTime: new Date(product.createdAt).toISOString().split('T')[0],
             }));
 
+            // Filter products by selected category
+            const filteredProducts = selectedCategory === 'all'
+                ? uniqueProducts
+                : uniqueProducts.filter(product => product.category === selectedCategory);
+
             // Sort products in descending order by creation date
-            const sortedProducts = uniqueProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            const sortedProducts = filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setProducts(sortedProducts);
             setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage)); // Calculate total pages
         } catch (error) {
@@ -58,6 +79,11 @@ const Rate = () => {
 
     const closeModal = () => {
         setSelectedProduct(null);
+    };
+
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        setCurrentPage(1); // Reset to the first page when changing the category
     };
 
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -86,6 +112,20 @@ const Rate = () => {
     return (
         <div className="container">
             <h1><b>सामानको मूल्य</b></h1>
+
+            {/* Category selection buttons */}
+            <div className="category-select">
+                {categories.map((cat) => (
+                    <button
+                        key={cat.value}
+                        className={selectedCategory === cat.value ? 'active' : ''}
+                        onClick={() => handleCategoryChange(cat.value)}
+                    >
+                        {cat.label}
+                    </button>
+                ))}
+            </div>
+
             <table className="rate-table">
                 <thead>
                 <tr>
