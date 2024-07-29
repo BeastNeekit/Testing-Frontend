@@ -22,7 +22,7 @@ const HeroSection = () => {
           </Box>{" "}
           Get <Text> Your Yudhro </Text>
           </Box>
-           <Button onClick={()=>navigate("/signup")}  size={"2xl"} fontSize={"larger"} className='button-50' mt={5} >  Get Started</Button>
+           <Button onClick={()=>navigate("/login")}  size={"2xl"} fontSize={"larger"} className='button-50' mt={5} >  Get Started</Button>
         </Box>
         
       <Box>
