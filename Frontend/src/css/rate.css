@@ -416,7 +416,7 @@ h1 {
 
 
 .change-item {
-    
+    display: inline;
     padding: 8px 1px;
     margin-right: 30px;
     border-radius: 8px;
