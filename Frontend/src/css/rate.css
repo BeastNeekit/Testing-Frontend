@@ -260,7 +260,7 @@ h1 {
 
 
 
-/* rate.css */
+
 
 .product-section {
     padding: 20px;
@@ -409,43 +409,53 @@ h1 {
 }
 
 
+
+
+.oldest-changes {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 10px 0;
+    border-radius: 8px;
+   
+}
+
 .oldest-changes-list {
-    border-radius: 8px;
-    margin-bottom: 15px;
+    display: flex;
+    animation: marquee 10s linear infinite;
+    gap: 40px; /* Add spacing between items */
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
 }
 
 
-.change-item {
-    display: inline;
-    padding: 8px 1px;
-    margin-right: 30px;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.3s;
-}
 
-/* Change item hover effect */
+
 .change-item:hover {
-    background-color: #f0f2f5;
-    cursor: pointer;
-    transform: translateY(-2px);
+    transform: scale(1.05); /* Slightly enlarge the item on hover */
 }
 
-
-
-/* Price change positive (increase) */
-.change-item.increase .price-change {
-    color: #2ecc71;
+.product-name {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #343a40;
 }
 
-/* Price change negative (decrease) */
-.change-item.decrease .price-change {
-    color: #e74c3c;
+.price-change {
+    font-size: 1.2rem;
+    margin: 5px 0;
 }
 
+.change-date {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
 
-
-
-
-
- 
-
+.no-changes-message {
+    color: #6c757d;
+    font-size: 1rem;
+    text-align: center;
+}
