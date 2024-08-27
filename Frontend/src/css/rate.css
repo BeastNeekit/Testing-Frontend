@@ -423,7 +423,7 @@ h1 {
 }
 
 .change-item {
-    display: inline:
+    display: inline;
     align-items: center;
     padding: 8px 1px;
     margin-right: 30px;
