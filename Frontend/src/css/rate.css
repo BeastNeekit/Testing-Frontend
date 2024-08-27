@@ -408,15 +408,12 @@ h1 {
 }
 
 
-
-
 .oldest-changes-list {
     border-radius: 8px;
     margin-bottom: 15px;
 }
 
 .change-item {
-    display: inline-flex;
     align-items: center;
     padding: 8px 1px;
     margin-right: 30px;
