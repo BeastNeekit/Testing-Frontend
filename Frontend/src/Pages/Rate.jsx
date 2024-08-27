@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/rate.css';
+import '../css/rate.css'; // Ensure your CSS matches the new design
 import ProductDetailPopup from './Extras/ProductDetailPopup';
 import { backUrl } from "../Urls";
 import { formatToNepaliDigits } from './Extras/utils';
@@ -9,22 +9,25 @@ const Rate = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const itemsPerPage = 5;
     const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const itemsPerPage = 24;
 
     const categories = [
-        { value: 'all', label: 'All' },
-        { value: 'cigarette', label: '🚬 चुरोट' },
-        { value: 'noodle', label: '🍜 चाउचाउ' },
-        { value: 'beans', label: '🫘 गेडगुडी' },
-        { value: 'grain', label: '🌾 चामल' },
-        { value: 'soap', label: '🧼 साबुन' },
-        { value: 'electronic', label: '🔌 इलेक्ट्रोनिक' },
-        { value: 'drink', label: '💧 Drinks' },
-        { value: 'sanity', label: '⚕️ Sanity' },
-        { value: 'chocolate', label: '🍫 चकलेट' },
-        { value: 'biscuit', label: '🍪 बिस्कुट' },
-        { value: 'others', label: '🛒 अन्य' },
+        { value: 'all', label: 'All', icon:'=' },
+        { value: 'cigarette', label: '🚬 चुरोट', icon:'🚬' },
+        { value: 'noodle', label: '🍜 चाउचाउ', icon:'🍜' },
+        { value: 'beans', label: '🫘 गेडगुडी', icon:'🫘' },
+        { value: 'grain', label: '🌾 चामल', icon:'🌾' },
+        { value: 'soap', label: '🧼 साबुन', icon:'🧼' },
+        { value: 'electronic', label: '🔌 इलेक्ट्रोनिक', icon:'🔌' },
+        { value: 'drink', label: '💧 Drinks', icon:'💧' },
+        { value: 'sanity', label: '⚕️ Sanity', icon:'⚕️' },
+        { value: 'chocolate', label: '🍫 चकलेट', icon:'🍫' },
+        { value: 'biscuit', label: '🍪 बिस्कुट', icon:'🍪' },
+        { value: 'others', label: '🛒 अन्य', icon:'🛒' },
     ];
 
     useEffect(() => {
@@ -32,41 +35,54 @@ const Rate = () => {
     }, [selectedCategory]);
 
     const fetchProducts = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const response = await fetch(`${backUrl}/products`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
+            const uniqueProducts = getUniqueProducts(data);
+            const filteredProducts = filterProductsByCategory(uniqueProducts);
+            const sortedProducts = sortProductsByDate(filteredProducts);
 
-            // Create a map to store the latest product for each name
-            const productMap = new Map();
-            data.forEach(product => {
-                const existingProduct = productMap.get(product.name);
-                if (!existingProduct || new Date(product.createdAt) > new Date(existingProduct.createdAt)) {
-                    productMap.set(product.name, product);
-                }
-            });
-
-            // Convert map values to an array and format createdAt
-            const uniqueProducts = Array.from(productMap.values()).map(product => ({
-                ...product,
-                formattedUpdateTime: new Date(product.createdAt).toISOString().split('T')[0],
-            }));
-
-            // Filter products by selected category
-            const filteredProducts = selectedCategory === 'all'
-                ? uniqueProducts
-                : uniqueProducts.filter(product => product.category === selectedCategory);
-
-            // Sort products in descending order by creation date
-            const sortedProducts = filteredProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setProducts(sortedProducts);
-            setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage)); // Calculate total pages
+            setTotalPages(calculateTotalPages(sortedProducts.length, itemsPerPage));
         } catch (error) {
             console.error('Error fetching products:', error);
-            // Handle error as needed (e.g., show error message)
+            setError('Failed to load products. Please try again later.');
+        } finally {
+            setLoading(false);
         }
+    };
+
+    const getUniqueProducts = (products) => {
+        const productMap = new Map();
+        products.forEach(product => {
+            const existingProduct = productMap.get(product.name);
+            if (!existingProduct || new Date(product.createdAt) > new Date(existingProduct.createdAt)) {
+                productMap.set(product.name, product);
+            }
+        });
+        return Array.from(productMap.values()).map(product => ({
+            ...product,
+            formattedUpdateTime: new Date(product.createdAt).toISOString().split('T')[0],
+        }));
+    };
+
+    const filterProductsByCategory = (products) => {
+        return selectedCategory === 'all'
+            ? products
+            : products.filter(product => product.category === selectedCategory);
+    };
+
+    const sortProductsByDate = (products) => {
+        return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    };
+
+    const calculateTotalPages = (totalItems, itemsPerPage) => {
+        return Math.ceil(totalItems / itemsPerPage);
     };
 
     const handlePageChange = (pageNumber) => {
@@ -105,51 +121,69 @@ const Rate = () => {
                         {number}
                     </button>
                 ))}
+
             </div>
         );
     };
 
     return (
-        <div className="container">
-            <h1><b>सामानको मूल्य</b></h1>
-
-            {/* Category selection buttons */}
-            <div className="category-select">
-                {categories.map((cat) => (
-                    <button
-                        key={cat.value}
-                        className={selectedCategory === cat.value ? 'active' : ''}
-                        onClick={() => handleCategoryChange(cat.value)}
-                    >
-                        {cat.label}
-                    </button>
-                ))}
+        <div className="rate-container">
+            <div className="sidebar">
+                <div className="category-list">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.value}
+                            className={selectedCategory === cat.value ? 'active' : ''}
+                            onClick={() => handleCategoryChange(cat.value)}
+                            aria-label={cat.label}
+                        >
+                            {cat.label}
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            <table className="rate-table">
-                <thead>
-                <tr>
-                    <th>तस्बिर</th>
-                    <th>सामानको नाम</th>
-                    <th>मूल्य</th>
-                    <th>प्रवेश समय</th>
-                </tr>
-                </thead>
-                <tbody>
-                {displayedProducts.map((product) => (
-                    <tr key={product._id} onClick={() => handleRowClick(product)} style={{ cursor: 'pointer' }}>
-                        <td>
-                            <img src={product.image} alt={product.name} style={{ width: '100px', height: '100px', marginLeft: '25%' }} />
-                        </td>
-                        <td>{product.name}</td>
-                        <td>{formatToNepaliDigits(product.price.toString())}</td> {/* Format price to Nepali digits */}
-                        <td>{formatToNepaliDigits(product.formattedUpdateTime.toString())}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            <div className="pagination-controls">{renderPagination()}</div>
-            {selectedProduct && <ProductDetailPopup product={selectedProduct} onClose={closeModal} />}
+            <div className="product-section">
+                {loading && <div className="loading-message">Loading...</div>}
+                {error && <div className="error-message">{error}</div>}
+                <div className="category-list2">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat.value}
+                            className={selectedCategory === cat.value ? 'active' : ''}
+                            onClick={() => handleCategoryChange(cat.value)}
+                            aria-label={cat.label}
+                        >
+                            {cat.icon}
+                        </button>
+                    ))}
+                </div>
+                {displayedProducts.length > 0 ? (
+                    <div className="product-grid">
+                        {displayedProducts.map((product) => (
+                            <div
+                                key={product._id}
+                                className="product-card"
+                                onClick={() => handleRowClick(product)}
+                            >
+                                <img src={product.image} alt={product.name} className="product-image"/>
+                                <div className="product-info">
+                                    <h4 className="product-name">{product.name}</h4>
+                                    <p className="product-price">रु {formatToNepaliDigits(product.price.toString())}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="no-products-message">
+                        Items are not registered !!
+                    </div>
+                )}
+
+                {renderPagination()}
+
+                {selectedProduct && <ProductDetailPopup product={selectedProduct} onClose={closeModal}/>}
+            </div>
         </div>
     );
 };
