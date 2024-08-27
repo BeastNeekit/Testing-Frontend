@@ -459,3 +459,11 @@ h1 {
     font-size: 1rem;
     text-align: center;
 }
+
+.increase .price-change {
+    color: green;
+}
+
+.decrease .price-change {
+    color: red;
+}
