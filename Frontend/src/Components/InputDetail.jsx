@@ -82,7 +82,7 @@ const InputDetail = ({ addOrder }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newProduct),
+            
             });
 
             if (!response.ok) {
