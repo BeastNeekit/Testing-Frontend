@@ -380,13 +380,6 @@ h1 {
 
 
 
-/* Category List */
-.category-list2 {
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
 
 
 .category-list2 button {
