@@ -382,7 +382,6 @@ h1 {
 
 /* Category List */
 .category-list2 {
-    display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
