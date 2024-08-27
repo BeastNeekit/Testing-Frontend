@@ -380,6 +380,15 @@ h1 {
 
 
 
+/* Category List */
+.category-list2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
 
 .category-list2 button {
     background-color: #f8f9fa; /* Light background for buttons */
@@ -414,6 +423,7 @@ h1 {
 }
 
 .change-item {
+    display: inline:
     align-items: center;
     padding: 8px 1px;
     margin-right: 30px;
