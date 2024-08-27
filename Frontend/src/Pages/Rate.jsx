@@ -177,7 +177,6 @@ const Rate = () => {
 
 
             <div className="product-section">
-                <marquee direction="right" loop="">
                 <div className="oldest-changes">
                     {oldestChanges.length > 0 ? (
                         <div className="oldest-changes-list">
@@ -199,7 +198,7 @@ const Rate = () => {
                         <div className="no-changes-message">No changes available</div>
                     )}
                 </div>
-                </marquee>
+
                 {loading && <div className="loading-message">Loading...</div>}
                 {error && <div className="error-message">{error}</div>}
 
