@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/rate.css'; // Ensure your CSS matches the new design
+import '../css/rate.css';
 import ProductDetailPopup from './Extras/ProductDetailPopup';
 import { backUrl } from "../Urls";
 import { formatToNepaliDigits } from './Extras/utils';
@@ -12,22 +12,23 @@ const Rate = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [oldestChanges, setOldestChanges] = useState([]);
 
     const itemsPerPage = 24;
 
     const categories = [
-        { value: 'all', label: 'All', icon:'=' },
-        { value: 'cigarette', label: '🚬 चुरोट', icon:'🚬' },
-        { value: 'noodle', label: '🍜 चाउचाउ', icon:'🍜' },
-        { value: 'beans', label: '🫘 गेडगुडी', icon:'🫘' },
-        { value: 'grain', label: '🌾 चामल', icon:'🌾' },
-        { value: 'soap', label: '🧼 साबुन', icon:'🧼' },
-        { value: 'electronic', label: '🔌 इलेक्ट्रोनिक', icon:'🔌' },
-        { value: 'drink', label: '💧 Drinks', icon:'💧' },
-        { value: 'sanity', label: '⚕️ Sanity', icon:'⚕️' },
-        { value: 'chocolate', label: '🍫 चकलेट', icon:'🍫' },
-        { value: 'biscuit', label: '🍪 बिस्कुट', icon:'🍪' },
-        { value: 'others', label: '🛒 अन्य', icon:'🛒' },
+        { value: 'all', label: 'All', icon: '=' },
+        { value: 'cigarette', label: '🚬 चुरोट', icon: '🚬' },
+        { value: 'noodle', label: '🍜 चाउचाउ', icon: '🍜' },
+        { value: 'beans', label: '🫘 गेडगुडी', icon: '🫘' },
+        { value: 'grain', label: '🌾 चामल', icon: '🌾' },
+        { value: 'soap', label: '🧼 साबुन', icon: '🧼' },
+        { value: 'electronic', label: '🔌 इलेक्ट्रोनिक', icon: '🔌' },
+        { value: 'drink', label: '💧 Drinks', icon: '💧' },
+        { value: 'sanity', label: '⚕️ Sanity', icon: '⚕️' },
+        { value: 'chocolate', label: '🍫 चकलेट', icon: '🍫' },
+        { value: 'biscuit', label: '🍪 बिस्कुट', icon: '🍪' },
+        { value: 'others', label: '🛒 अन्य', icon: '🛒' },
     ];
 
     useEffect(() => {
@@ -46,9 +47,15 @@ const Rate = () => {
             const uniqueProducts = getUniqueProducts(data);
             const filteredProducts = filterProductsByCategory(uniqueProducts);
             const sortedProducts = sortProductsByDate(filteredProducts);
+            const changes = calculateRateChanges(data);
 
             setProducts(sortedProducts);
             setTotalPages(calculateTotalPages(sortedProducts.length, itemsPerPage));
+
+            // Get the oldest 4 changes
+            const oldestFourChanges = changes.length > 0 ? changes.slice(-4) : [];
+            setOldestChanges(oldestFourChanges);
+
         } catch (error) {
             console.error('Error fetching products:', error);
             setError('Failed to load products. Please try again later.');
@@ -56,6 +63,7 @@ const Rate = () => {
             setLoading(false);
         }
     };
+
 
     const getUniqueProducts = (products) => {
         const productMap = new Map();
@@ -83,6 +91,31 @@ const Rate = () => {
 
     const calculateTotalPages = (totalItems, itemsPerPage) => {
         return Math.ceil(totalItems / itemsPerPage);
+    };
+
+    const calculateRateChanges = (products) => {
+        const changes = [];
+        const productMap = new Map();
+
+        products.forEach(product => {
+            const existingProduct = productMap.get(product.name);
+            if (existingProduct) {
+                const priceChange = product.price - existingProduct.price;
+                if (priceChange !== 0) {
+                    changes.push({
+                        name: product.name,
+                        priceChange,
+                        date: new Date(product.createdAt).toISOString().split('T')[0],
+                        isIncrease: priceChange > 0,
+                    });
+                }
+            }
+            productMap.set(product.name, product);
+        });
+
+        // Sort changes by date to find the oldest
+        changes.sort((a, b) => new Date(a.date) - new Date(b.date));
+        return changes;
     };
 
     const handlePageChange = (pageNumber) => {
@@ -121,7 +154,6 @@ const Rate = () => {
                         {number}
                     </button>
                 ))}
-
             </div>
         );
     };
@@ -143,9 +175,34 @@ const Rate = () => {
                 </div>
             </div>
 
+
             <div className="product-section">
+                <marquee direction="right" loop="">
+                <div className="oldest-changes">
+                    {oldestChanges.length > 0 ? (
+                        <div className="oldest-changes-list">
+                            {oldestChanges.map((change, index) => (
+                                <div
+                                    key={index}
+                                    className={`change-item ${change.isIncrease ? 'increase' : 'decrease'}`}
+                                >
+                                    <span className="product-name">{change.name}</span>
+                                    <span className="price-change">
+                                     {change.isIncrease ? '🚀' : '🔻'}रु {formatToNepaliDigits(Math.abs(change.priceChange).toString())}
+                                    </span>
+                                    <span className="change-date">{formatToNepaliDigits(change.date.toString())}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                    ) : (
+                        <div className="no-changes-message">No changes available</div>
+                    )}
+                </div>
+                </marquee>
                 {loading && <div className="loading-message">Loading...</div>}
                 {error && <div className="error-message">{error}</div>}
+
                 <div className="category-list2">
                     {categories.map((cat) => (
                         <button
