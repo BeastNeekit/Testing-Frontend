@@ -397,10 +397,6 @@ h1 {
 }
 
 
-
-
-
-
 .product-info {
     padding: 10px;
 }
@@ -415,5 +411,43 @@ h1 {
     font-size: 16px;
     color: #28a745;
 }
+
+
+
+
+.oldest-changes-list {
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.change-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 1px;
+    margin-right: 30px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Change item hover effect */
+.change-item:hover {
+    background-color: #f0f2f5;
+    cursor: pointer;
+    transform: translateY(-2px);
+}
+
+
+
+/* Price change positive (increase) */
+.change-item.increase .price-change {
+    color: #2ecc71;
+}
+
+/* Price change negative (decrease) */
+.change-item.decrease .price-change {
+    color: #e74c3c;
+}
+
+
 
 
