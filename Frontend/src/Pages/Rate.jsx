@@ -53,7 +53,7 @@ const Rate = () => {
             setTotalPages(calculateTotalPages(sortedProducts.length, itemsPerPage));
 
             // Get the oldest 4 changes
-            const oldestFourChanges = changes.length > 0 ? changes.slice(-4) : [];
+            const oldestFourChanges = changes.length > 0 ? changes.slice(-6) : [];
             setOldestChanges(oldestFourChanges);
 
         } catch (error) {
