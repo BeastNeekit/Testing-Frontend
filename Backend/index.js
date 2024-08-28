@@ -5,7 +5,6 @@ const orderRoutes = require('./Routes/orderRoutes');
 const cors = require('cors');
 const userRoutes = require('./Routes/user');
 const productRoutes = require('./Routes/productRoutes');
-const adminRouter = require('./Routes/admin'); 
 
 require("dotenv").config
 
@@ -24,7 +23,7 @@ app.use(cors(
 app.use("/order", orderRoutes);
 app.use('/user', userRoutes);
 app.use('/products', productRoutes);
-app.use('/admin', adminRouter);
+
 
 app.get("/", async (req, res) => {
   try {
