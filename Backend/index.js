@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(cors(
     {
-      origin: ["https://testing-frontend-2pq8.vercel.app"],
+      origin: ["https://shopefi.vercel.app"],
       methods: ["POST", "GET"],
       credentials: true
     }
